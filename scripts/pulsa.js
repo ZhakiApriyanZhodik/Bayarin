@@ -103,6 +103,7 @@
         metode: 'pulsa',
         tanggal: new Date().toISOString()
       });
+      kurangiSaldo(nominalAktif);
       tampilToast('Pembelian pulsa berhasil!', 'sukses');
       providerAktif = null;
       nominalAktif = null;

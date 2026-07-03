@@ -5,16 +5,46 @@
   var daftarEl = document.getElementById('daftar-riwayat');
   var kosongEl = document.getElementById('riwayat-kosong');
   var tombolHapus = document.getElementById('tombol-hapus-semua');
+  var filterAktif = 'semua';
+
+  // tambah filter bar
+  var bagianChart = document.getElementById('bagian-chart');
+  var filterHtml = '<div class="flex gap-2 overflow-x-auto pb-1" id="filter-bar">';
+  var filters = [
+    { id: 'semua', label: 'Semua' },
+    { id: 'pln', label: 'Listrik' },
+    { id: 'pdam', label: 'PDAM' },
+    { id: 'internet', label: 'Internet' },
+    { id: 'seminar', label: 'Seminar' },
+    { id: 'spp', label: 'SPP' },
+    { id: 'pulsa', label: 'Pulsa' }
+  ];
+  filters.forEach(function(f) {
+    var aktif = f.id === filterAktif;
+    filterHtml += '<button data-filter="' + f.id + '" class="whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border transition ' + (aktif ? 'bg-brand text-white border-brand' : 'bg-white text-gray-500 border-gray-200 hover:border-brand-light') + '">' + f.label + '</button>';
+  });
+  filterHtml += '</div>';
+
+  // sisipkan filter sebelum chart
+  bagianChart.insertAdjacentHTML('beforebegin', filterHtml);
+
+  var filterBar = document.getElementById('filter-bar');
 
   renderRiwayat();
 
   function renderRiwayat() {
     var txs = ambilRiwayat();
 
+    // filter
+    if (filterAktif !== 'semua') {
+      txs = txs.filter(function(tx) { return tx.kategori === filterAktif; });
+    }
+
     if (txs.length === 0) {
       daftarEl.style.display = 'none';
       kosongEl.classList.remove('hidden');
-      tombolHapus.classList.add('hidden');
+      if (ambilRiwayat().length > 0) tombolHapus.classList.remove('hidden');
+      else tombolHapus.classList.add('hidden');
       return;
     }
 
@@ -36,10 +66,38 @@
     });
     daftarEl.innerHTML = html;
 
-    // render chart pengeluaran per kategori
-    renderChart(txs);
+    renderChart(ambilRiwayat());
   }
 
+  // event filter
+  filterBar.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-filter]');
+    if (!btn) return;
+    filterAktif = btn.getAttribute('data-filter');
+
+    // update tombol
+    var allBtns = filterBar.querySelectorAll('button');
+    for (var i = 0; i < allBtns.length; i++) {
+      var b = allBtns[i];
+      if (b.getAttribute('data-filter') === filterAktif) {
+        b.className = 'whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border transition bg-brand text-white border-brand';
+      } else {
+        b.className = 'whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border transition bg-white text-gray-500 border-gray-200 hover:border-brand-light';
+      }
+    }
+
+    renderRiwayat();
+  });
+
+  // hapus semua
+  tombolHapus.addEventListener('click', function() {
+    if (!confirm('Hapus semua riwayat transaksi?')) return;
+    localStorage.removeItem('bayarin_tx');
+    renderRiwayat();
+    tampilToast('Riwayat berhasil dihapus');
+  });
+
+  // chart pengeluaran per kategori
   function renderChart(txs) {
     var perKat = {};
     txs.forEach(function(tx) {
@@ -58,6 +116,12 @@
     });
 
     var bagianChart = document.getElementById('bagian-chart');
+
+    if (data.length === 0) {
+      bagianChart.classList.add('hidden');
+      return;
+    }
+
     bagianChart.classList.remove('hidden');
 
     if (window._chartBayarin) window._chartBayarin.destroy();
@@ -92,13 +156,5 @@
       }
     });
   }
-
-  // hapus semua riwayat
-  tombolHapus.addEventListener('click', function() {
-    if (!confirm('Hapus semua riwayat transaksi?')) return;
-    localStorage.removeItem('bayarin_tx');
-    renderRiwayat();
-    tampilToast('Riwayat berhasil dihapus');
-  });
 
 })();

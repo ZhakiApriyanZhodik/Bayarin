@@ -1,5 +1,35 @@
 // app.js — fungsi umum
 
+var SALDO_KEY = 'bayarin_saldo';
+var SALDO_DEFAULT = 2450000;
+
+function ambilSaldo() {
+  var s = localStorage.getItem(SALDO_KEY);
+  if (s === null) return SALDO_DEFAULT;
+  return Number(s);
+}
+
+function simpanSaldo(jumlah) {
+  localStorage.setItem(SALDO_KEY, jumlah);
+  updateTampilSaldo();
+}
+
+function kurangiSaldo(jumlah) {
+  var s = ambilSaldo();
+  if (s < jumlah) return false;
+  simpanSaldo(s - jumlah);
+  return true;
+}
+
+function tambahSaldo(jumlah) {
+  simpanSaldo(ambilSaldo() + jumlah);
+}
+
+function updateTampilSaldo() {
+  var el = document.getElementById('tampil-saldo');
+  if (el) el.textContent = formatRp(ambilSaldo());
+}
+
 function formatRp(angka) {
   return 'Rp ' + Number(angka).toLocaleString('id-ID');
 }
@@ -81,3 +111,8 @@ function unduhStrukPDF(judul, data) {
   doc.text('Dicetak oleh sistem Bayarin', 105, y + 12, { align: 'center' });
   doc.save('Bayarin_' + judul + '.pdf');
 }
+
+// update saldo saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+  updateTampilSaldo();
+});

@@ -51,7 +51,7 @@
         <span class="text-xs opacity-75 block">Saldo Bayarin</span>
         <span class="text-[26px] font-bold tracking-tight block mt-0.5" id="tampil-saldo">Rp 2.450.000</span>
       </div>
-      <button class="bg-aksen text-gray-900 px-4 py-2 rounded-lg text-[13px] font-semibold flex items-center gap-1.5 hover:bg-aksen-hover active:scale-[0.97] transition">
+      <button id="tombol-topup" class="bg-aksen text-gray-900 px-4 py-2 rounded-lg text-[13px] font-semibold flex items-center gap-1.5 hover:bg-aksen-hover active:scale-[0.97] transition">
         <i class="fa-solid fa-plus"></i> Top Up
       </button>
     </section>
@@ -141,6 +141,16 @@
         '</div>';
       }).join('');
     })();
+
+    // top up
+    document.getElementById('tombol-topup').addEventListener('click', function() {
+      var nominal = prompt('Masukkan nominal Top Up:\n(Contoh: 100000)');
+      if (!nominal) return;
+      nominal = Number(nominal.replace(/\./g, '').replace(/[^0-9]/g, ''));
+      if (!nominal || nominal < 10000) { tampilToast('Minimal Top Up Rp 10.000', 'gagal'); return; }
+      tambahSaldo(nominal);
+      tampilToast('Top Up ' + formatRp(nominal) + ' berhasil!', 'sukses');
+    });
   </script>
 </body>
 </html>

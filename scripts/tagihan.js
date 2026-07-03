@@ -258,6 +258,7 @@
         tanggal: new Date().toISOString()
       };
       simpanRiwayat(tx);
+      kurangiSaldo(total);
 
       // render struk
       var struk = '';

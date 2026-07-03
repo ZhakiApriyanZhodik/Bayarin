@@ -112,6 +112,7 @@
         metode: 'spp',
         tanggal: new Date().toISOString()
       });
+      kurangiSaldo(jumlah);
     }
 
     tampilToast('Pembayaran cicilan berhasil!', 'sukses');
@@ -180,6 +181,7 @@
       metode: 'spp',
       tanggal: new Date().toISOString()
     });
+    kurangiSaldo(data.jumlah);
 
     tampilToast('Pembayaran berhasil!', 'sukses');
     kodeInput.value = kode;
