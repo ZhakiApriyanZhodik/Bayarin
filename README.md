@@ -1,110 +1,91 @@
 # Bayarin
 
-Aplikasi web simulasi pembayaran tagihan & isi pulsa. Dibangun dengan HTML5, Tailwind CSS, dan Vanilla JavaScript. Berjalan sepenuhnya di sisi klien (client-side) tanpa backend.
+Aplikasi web untuk simulasi pembayaran tagihan dan isi pulsa. Dibuat menggunakan HTML5, CSS3 (Tailwind), dan JavaScript murni. Semua data disimpan di localStorage, tidak pakai backend.
 
 ## Cara Menjalankan
 
 1. Clone repository ini
-2. Buka `index.html` di browser (bisa langsung double-click atau pakai Live Server VSCode)
+2. Buka `index.html` di browser
 
 ```
 git clone https://github.com/ZhakiApriyanZhodik/Bayarin.git
-cd Bayarin
 ```
 
-Kalau pakai VSCode, install extension **Live Server** klik kanan `index.html` → "Open with Live Server".
+Bisa langsung buka file `index.html` atau pakai Live Server di VSCode.
 
 ## Fitur
 
-### 1. Dashboard
-- Ringkasan saldo simulasi
-- Quick access ke 6 layanan (Listrik, PDAM, Internet, Seminar, SPP, Pulsa)
+### Dashboard
+- Saldo simulasi
+- Akses cepat ke semua layanan
 - Promo banner
-- Transaksi terakhir (dari localStorage)
+- Transaksi terakhir
 
-### 2. Bayar Tagihan
-- 4 kategori: Listrik/PLN, PDAM, Internet, Seminar/Event
-- Form cek tagihan dengan validasi input
-- Detail tagihan (nama, alamat, periode, total, jatuh tempo)
+### Bayar Tagihan
+- Listrik/PLN, PDAM, Internet, Seminar
+- Cek tagihan berdasarkan nomor pelanggan
 - 3 metode pembayaran:
-  - **Virtual Account** — generate nomor VA unik + instruksi transfer bank (BCA, BNI, Mandiri, BRI, BSI)
-  - **QRIS** — QR code (qrcode.js) + countdown timer 5 menit
-  - **Bayar di Teller/Kasir** — kode pembayaran + daftar lokasi kantor
-- Loading state spinner (simulasi 800-1500ms)
-- Struk pembayaran + unduh PDF (jsPDF)
+  - Virtual Account (kode VA + instruksi transfer)
+  - QRIS (QR code + countdown 5 menit)
+  - Bayar di Teller (kode bayar + lokasi kantor)
+- Loading state, struk pembayaran, unduh PDF
 
-### 3. Biaya Kuliah / SPP
-- Input NIM → tampil tabel cicilan semester (6-8 item)
-- Checkbox multi-pilih cicilan + hitung total otomatis
-- Input kode tagihan → detail tagihan (nama, deskripsi, semester, status)
-- Bayar cicilan + update status lunas
+### Biaya Kuliah / SPP
+- Input NIM untuk lihat cicilan semester
+- Tabel cicilan dengan checkbox (bisa pilih beberapa)
+- Input kode tagihan untuk lihat detail
+- Bayar cicilan langsung
 
-### 4. Isi Pulsa & Paket Data
-- 6 provider: Telkomsel, XL Axiata, Indosat, Tri, Smartfren, Axis
-- Input nomor HP + deteksi provider otomatis dari prefix
-- Pilihan nominal: Rp 10.000 - Rp 200.000
-- Preview detail sebelum bayar
+### Isi Pulsa
+- 6 provider (Telkomsel, XL, Indosat, Tri, Smartfren, Axis)
+- Deteksi provider otomatis dari nomor HP
+- Pilih nominal, preview, lalu bayar
 
-### 5. Riwayat Transaksi
-- Tabel histori semua transaksi dari localStorage
-- Chart pengeluaran per kategori (Chart.js doughnut)
+### Riwayat Transaksi
+- List semua transaksi
+- Chart pengeluaran per kategori (Chart.js)
 - Hapus semua riwayat
 
-### Fitur Tambahan
-- Responsive design (mobile-first, bagus di desktop juga)
-- Toast notifikasi (sukses/error)
-- Validasi form di semua input
-- Navigasi SPA antar halaman
-- Cetak struk (window.print + CSS print media query)
+## Teknologi yang Dipakai
 
-## Stack
-
-| Teknologi | Kegunaan |
+| Teknologi | Fungsi |
 |---|---|
 | HTML5 | Struktur halaman |
 | Tailwind CSS (CDN) | Styling |
 | Font Awesome 6 | Ikon |
-| Inter (Google Fonts) | Tipografi |
-| Vanilla JavaScript (ES6+) | Logika aplikasi |
-| localStorage | Penyimpanan transaksi |
-| qrcode.js (CDN) | Generate QR code QRIS |
-| jsPDF (CDN) | Generate PDF struk |
-| Chart.js (CDN) | Chart pengeluaran |
+| Google Fonts (Inter) | Font |
+| Vanilla JavaScript | Logika aplikasi |
+| localStorage | Simpan transaksi |
+| qrcode.js | Generate QR code QRIS |
+| jsPDF | Unduh struk PDF |
+| Chart.js | Chart pengeluaran |
 
 ## Struktur Folder
 
 ```
 Bayarin/
-├── index.html          Dashboard
-├── styles.css          Custom CSS
+├── index.html
+├── styles.css
 ├── pages/
-│   ├── tagihan.html    Bayar Tagihan
-│   ├── spp.html        SPP / Cicilan
-│   ├── pulsa.html      Isi Pulsa
-│   └── riwayat.html    Riwayat Transaksi
+│   ├── tagihan.html
+│   ├── spp.html
+│   ├── pulsa.html
+│   └── riwayat.html
 ├── scripts/
-│   ├── app.js          Fungsi umum
-│   ├── data.js         Data dummy
-│   ├── tagihan.js      Logika tagihan
-│   ├── spp.js          Logika SPP
-│   ├── pulsa.js        Logika pulsa
-│   └── riwayat.js      Logika riwayat
+│   ├── app.js
+│   ├── data.js
+│   ├── tagihan.js
+│   ├── spp.js
+│   ├── pulsa.js
+│   └── riwayat.js
 └── docs/
-    └── akun-test.md    Data akun untuk testing
+    └── akun-test.md
 ```
 
-## Data Test
+## Data untuk Testing
 
-Lihat [docs/akun-test.md](docs/akun-test.md) untuk daftar nomor pelanggan, NIM, dan nomor HP yang bisa dipakai untuk mencoba aplikasi.
+Lihat file [docs/akun-test.md](docs/akun-test.md) untuk daftar nomor pelanggan, NIM, kode tagihan, dan nomor HP yang bisa dipakai coba aplikasi.
 
-## Screenshot
+## Penjelasan
 
-*TODO: tambahkan screenshot tampilan desktop & mobile*
-
-## Link Demo
-
-*TODO: deploy ke GitHub Pages*
-
-## Author
-
-Zhaki Apriyan
+Aplikasi ini simulasi saja, tidak ada uang sungguhan. Semua transaksi hanya disimpan di browser (localStorage). Untuk menghapus data, bisa klik tombol "Hapus Semua" di halaman Riwayat.
