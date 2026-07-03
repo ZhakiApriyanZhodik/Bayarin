@@ -49,7 +49,7 @@
     <section class="bg-brand text-white rounded-2xl p-5 flex items-center justify-between">
       <div>
         <span class="text-xs opacity-75 block">Saldo Bayarin</span>
-        <span class="text-[26px] font-bold tracking-tight block mt-0.5" id="tampil-saldo">Rp 2.450.000</span>
+        <span class="text-[26px] font-bold tracking-tight block mt-0.5" id="tampil-saldo"></span>
       </div>
       <button id="tombol-topup" class="bg-aksen text-gray-900 px-4 py-2 rounded-lg text-[13px] font-semibold flex items-center gap-1.5 hover:bg-aksen-hover active:scale-[0.97] transition">
         <i class="fa-solid fa-plus"></i> Top Up
@@ -112,6 +112,33 @@
     </section>
   </main>
 
+  <!-- modal top up -->
+  <div id="modal-topup" class="fixed inset-0 z-[70] hidden">
+    <div class="absolute inset-0 bg-black/40" id="tutup-modal-topup"></div>
+    <div class="absolute bottom-0 left-0 right-0 mx-auto max-w-lg bg-white rounded-t-2xl p-5 flex flex-col gap-4" style="animation: slideup 0.3s ease">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-semibold">Top Up Saldo</h3>
+        <button id="tutup-topup" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <span class="text-xs text-gray-500 font-medium">Pilih Nominal</span>
+        <div class="grid grid-cols-3 gap-2" id="pilihan-topup"></div>
+      </div>
+
+      <div>
+        <label class="block text-xs text-gray-500 font-medium mb-1.5">Atau masukkan nominal</label>
+        <input type="text" id="input-topup" class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition" placeholder="Contoh: 50000">
+      </div>
+
+      <button id="konfirmasi-topup" class="w-full bg-brand text-white py-3 rounded-lg text-sm font-semibold hover:bg-brand-light active:scale-[0.98] transition">
+        Top Up Sekarang
+      </button>
+    </div>
+  </div>
+
   <!-- nav bawah -->
   <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 flex items-center justify-around h-16">
     <a href="index.html" class="nav-item aktif"><i class="fa-solid fa-house text-xl"></i><span>Beranda</span></a>
@@ -127,30 +154,77 @@
   <script src="scripts/app.js"></script>
   <script>
     (function() {
+      // render transaksi terakhir
       var txs = ambilRiwayat().slice(0, 5);
       var kontainer = document.getElementById('daftar-tx');
       var kosong = document.getElementById('kosong-tx');
-      if (txs.length === 0) { kosong.classList.remove('hidden'); return; }
-      kontainer.innerHTML = txs.map(function(tx) {
-        var v = visualKategori(tx.kategori);
-        var tgl = new Date(tx.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        return '<div class="item-tx">' +
-          '<div class="ikon-tx" style="background:' + v.bg + '"><i class="' + v.icon + '" style="color:' + v.warna + '"></i></div>' +
-          '<div class="info-tx"><span class="nama-tx">' + tx.label + '</span><span class="tanggal-tx">' + tgl + '</span></div>' +
-          '<span class="jumlah-tx">-' + formatRp(tx.jumlah) + '</span>' +
-        '</div>';
-      }).join('');
-    })();
+      if (txs.length === 0) { kosong.classList.remove('hidden'); }
+      else {
+        kontainer.innerHTML = txs.map(function(tx) {
+          var v = visualKategori(tx.kategori);
+          var tgl = new Date(tx.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+          return '<div class="item-tx">' +
+            '<div class="ikon-tx" style="background:' + v.bg + '"><i class="' + v.icon + '" style="color:' + v.warna + '"></i></div>' +
+            '<div class="info-tx"><span class="nama-tx">' + tx.label + '</span><span class="tanggal-tx">' + tgl + '</span></div>' +
+            '<span class="jumlah-tx">-' + formatRp(tx.jumlah) + '</span>' +
+          '</div>';
+        }).join('');
+      }
 
-    // top up
-    document.getElementById('tombol-topup').addEventListener('click', function() {
-      var nominal = prompt('Masukkan nominal Top Up:\n(Contoh: 100000)');
-      if (!nominal) return;
-      nominal = Number(nominal.replace(/\./g, '').replace(/[^0-9]/g, ''));
-      if (!nominal || nominal < 10000) { tampilToast('Minimal Top Up Rp 10.000', 'gagal'); return; }
-      tambahSaldo(nominal);
-      tampilToast('Top Up ' + formatRp(nominal) + ' berhasil!', 'sukses');
-    });
+      // === TOP UP MODAL ===
+      var modal = document.getElementById('modal-topup');
+      var inputTopup = document.getElementById('input-topup');
+      var nominalDipilih = null;
+      var pilihanNominal = [50000, 100000, 200000, 500000, 1000000];
+
+      function renderPilihanTopup() {
+        var grid = document.getElementById('pilihan-topup');
+        grid.innerHTML = pilihanNominal.map(function(n) {
+          var aktif = nominalDipilih === n;
+          return '<button data-nom="' + n + '" class="py-2.5 rounded-lg text-xs font-semibold border transition ' +
+            (aktif ? 'border-brand bg-brand text-white' : 'border-gray-200 text-gray-700 hover:border-brand-light') + '">' +
+            formatRp(n) + '</button>';
+        }).join('');
+
+        grid.querySelectorAll('button').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            nominalDipilih = Number(this.getAttribute('data-nom'));
+            inputTopup.value = '';
+            renderPilihanTopup();
+          });
+        });
+      }
+
+      document.getElementById('tombol-topup').addEventListener('click', function() {
+        nominalDipilih = null;
+        inputTopup.value = '';
+        renderPilihanTopup();
+        modal.classList.remove('hidden');
+      });
+
+      document.getElementById('tutup-modal-topup').addEventListener('click', function() {
+        modal.classList.add('hidden');
+      });
+      document.getElementById('tutup-topup').addEventListener('click', function() {
+        modal.classList.add('hidden');
+      });
+
+      inputTopup.addEventListener('input', function() {
+        nominalDipilih = null;
+        renderPilihanTopup();
+      });
+
+      document.getElementById('konfirmasi-topup').addEventListener('click', function() {
+        var nominal = nominalDipilih || Number(inputTopup.value.replace(/\./g, '').replace(/[^0-9]/g, ''));
+        if (!nominal || nominal < 10000) {
+          tampilToast('Minimal Top Up Rp 10.000', 'gagal');
+          return;
+        }
+        tambahSaldo(nominal);
+        modal.classList.add('hidden');
+        tampilToast('Top Up ' + formatRp(nominal) + ' berhasil!', 'sukses');
+      });
+    })();
   </script>
 </body>
 </html>
