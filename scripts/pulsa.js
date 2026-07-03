@@ -52,6 +52,64 @@
     }
   });
 
+  // lanjut ke preview
+  document.getElementById('tombol-lanjut-pulsa').addEventListener('click', function() {
+    var hp = inputHp.value.trim();
+    var nomErr = document.getElementById('error-nominal');
+
+    if (!hp || !/^08\d{8,11}$/.test(hp)) {
+      showError(hpErr, 'Nomor HP harus 10-13 digit, mulai dengan 08');
+      return;
+    }
+    hpErr.classList.add('hidden');
+
+    var detected = deteksiProvider(hp);
+    if (!detected) { showError(hpErr, 'Provider tidak dikenali'); return; }
+
+    if (!nominalAktif) {
+      showError(nomErr, 'Pilih nominal pulsa');
+      return;
+    }
+    nomErr.classList.add('hidden');
+
+    providerAktif = detected;
+    tampilPreview(hp);
+  });
+
+  document.getElementById('tombol-kembali-pulsa').addEventListener('click', function() {
+    document.getElementById('bagian-form-pulsa').classList.remove('hidden');
+    document.getElementById('bagian-preview-pulsa').classList.add('hidden');
+  });
+
+  function tampilPreview(hp) {
+    var kartu = document.getElementById('kartu-preview');
+    var html = '';
+    html += barisDetail('Provider', providerAktif.nama);
+    html += barisDetail('Nomor Tujuan', hp);
+    html += barisDetail('Nominal', formatRp(nominalAktif));
+    html += '<div class="garis-detail"></div>';
+    html += barisDetail('Harga', formatRp(nominalAktif), true);
+    kartu.innerHTML = html;
+
+    document.getElementById('bagian-form-pulsa').classList.add('hidden');
+    document.getElementById('bagian-preview-pulsa').classList.remove('hidden');
+
+    document.getElementById('tombol-bayar-pulsa').onclick = function() {
+      simpanRiwayat({
+        id: 'TX' + Date.now(),
+        kategori: 'pulsa',
+        label: providerAktif.nama + ' - ' + hp,
+        jumlah: nominalAktif,
+        metode: 'pulsa',
+        tanggal: new Date().toISOString()
+      });
+      tampilToast('Pembelian pulsa berhasil!', 'sukses');
+      providerAktif = null;
+      nominalAktif = null;
+      window.location.href = '../index.html';
+    };
+  }
+
   function renderNominal() {
     var grid = document.getElementById('grid-nominal');
     var html = '';
