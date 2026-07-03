@@ -35,6 +35,62 @@
       html += '</div>';
     });
     daftarEl.innerHTML = html;
+
+    // render chart pengeluaran per kategori
+    renderChart(txs);
+  }
+
+  function renderChart(txs) {
+    var perKat = {};
+    txs.forEach(function(tx) {
+      if (!perKat[tx.kategori]) perKat[tx.kategori] = 0;
+      perKat[tx.kategori] += tx.jumlah;
+    });
+
+    var labels = [], data = [], colors = [];
+    var warnaMap = { pln: '#2E7D32', pdam: '#1565C0', internet: '#7B1FA2', seminar: '#E65100', spp: '#00838F', pulsa: '#C62828' };
+    var namaMap = { pln: 'Listrik', pdam: 'PDAM', internet: 'Internet', seminar: 'Seminar', spp: 'SPP', pulsa: 'Pulsa' };
+
+    Object.keys(perKat).forEach(function(kat) {
+      labels.push(namaMap[kat] || kat);
+      data.push(perKat[kat]);
+      colors.push(warnaMap[kat] || '#718096');
+    });
+
+    var bagianChart = document.getElementById('bagian-chart');
+    bagianChart.classList.remove('hidden');
+
+    if (window._chartBayarin) window._chartBayarin.destroy();
+
+    window._chartBayarin = new Chart(document.getElementById('chart-pengeluaran').getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{ data: data, backgroundColor: colors, borderWidth: 0 }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              boxWidth: 12, padding: 10,
+              font: { family: 'Inter', size: 11 },
+              generateLabels: function(chart) {
+                var ds = chart.data.datasets[0];
+                return chart.data.labels.map(function(label, i) {
+                  return { text: label + ' (' + formatRp(ds.data[i]) + ')', fillStyle: ds.backgroundColor[i], hidden: false, index: i };
+                });
+              }
+            }
+          },
+          tooltip: {
+            callbacks: { label: function(ctx) { return ctx.label + ': ' + formatRp(ctx.raw); } }
+          }
+        }
+      }
+    });
   }
 
   // hapus semua riwayat
