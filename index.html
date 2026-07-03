@@ -126,17 +126,11 @@
   <script src="data.js"></script>
   <script src="app.js"></script>
   <script>
-    // render transaksi terakhir di dashboard
     (function() {
-      const txs = ambilRiwayat().slice(0, 5);
-      const kontainer = document.getElementById('daftar-tx');
-      const kosong = document.getElementById('kosong-tx');
-
-      if (txs.length === 0) {
-        kosong.classList.remove('hidden');
-        return;
-      }
-
+      var txs = ambilRiwayat().slice(0, 5);
+      var kontainer = document.getElementById('daftar-tx');
+      var kosong = document.getElementById('kosong-tx');
+      if (txs.length === 0) { kosong.classList.remove('hidden'); return; }
       kontainer.innerHTML = txs.map(function(tx) {
         var v = visualKategori(tx.kategori);
         var tgl = new Date(tx.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });

@@ -49,3 +49,35 @@ function showError(el, pesan) {
   el.textContent = pesan;
   el.classList.remove('hidden');
 }
+
+function unduhStrukPDF(judul, data) {
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF();
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(0, 70, 67);
+  doc.text('BAYARIN', 105, 20, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(100);
+  doc.text('Bukti Pembayaran', 105, 28, { align: 'center' });
+  doc.setDrawColor(0, 70, 67);
+  doc.line(20, 33, 190, 33);
+  var y = 45;
+  doc.setTextColor(0);
+  doc.setFontSize(11);
+  data.forEach(function(item) {
+    doc.setFont('helvetica', 'normal');
+    doc.text(item[0], 25, y);
+    doc.setFont('helvetica', 'bold');
+    doc.text(item[1], 185, y, { align: 'right' });
+    y += 8;
+  });
+  doc.setDrawColor(200);
+  doc.line(20, y + 2, 190, y + 2);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(150);
+  doc.text('Dicetak oleh sistem Bayarin', 105, y + 12, { align: 'center' });
+  doc.save('Bayarin_' + judul + '.pdf');
+}
