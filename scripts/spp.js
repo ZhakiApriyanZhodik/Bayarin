@@ -118,4 +118,72 @@
     renderTabelSPP(nim, data);
   }
 
+  // === KODE TAGIHAN ===
+  var kodeInput = document.getElementById('input-kode');
+  var kodeErr = document.getElementById('error-kode');
+  var tombolKode = document.getElementById('tombol-cek-kode');
+  var hasilKode = document.getElementById('hasil-kode');
+
+  tombolKode.addEventListener('click', function() {
+    var kode = kodeInput.value.trim();
+    if (!kode) { showError(kodeErr, 'Kode tagihan tidak boleh kosong'); return; }
+    if (kode.length < 10) { showError(kodeErr, 'Kode tagihan tidak valid'); return; }
+
+    var data = kodeTagihanData[kode];
+    if (!data) { showError(kodeErr, 'Kode tagihan tidak ditemukan'); return; }
+    kodeErr.classList.add('hidden');
+
+    var badgeCls = data.status === 'lunas' ? 'badge-lunas lunas' : 'badge-lunas belum';
+    var statusTxt = data.status === 'lunas' ? 'Lunas' : 'Belum Lunas';
+
+    var html = '<div class="bg-white border border-gray-200 rounded-2xl p-5">';
+    html += '<h3 class="text-base font-semibold mb-4">Detail Tagihan</h3>';
+    html += '<div class="flex flex-col gap-3 text-sm">';
+    html += barisDetail('Kode Tagihan', kode);
+    html += barisDetail('Nama', data.nama);
+    html += barisDetail('Tagihan', data.desc);
+    html += barisDetail('Semester', data.semester);
+    html += barisDetail('Jumlah', formatRp(data.jumlah));
+    html += barisDetail('Status', '<span class="' + badgeCls + '">' + statusTxt + '</span>');
+    html += '</div>';
+
+    if (data.status !== 'lunas') {
+      html += '<button class="bayar-kode-btn mt-4 w-full bg-aksen text-gray-900 py-2.5 rounded-lg text-sm font-bold hover:bg-aksen-hover active:scale-[0.98] transition" data-kode="' + kode + '">Bayar Tagihan</button>';
+    }
+    html += '</div>';
+
+    hasilKode.classList.remove('hidden');
+    hasilKode.innerHTML = html;
+
+    var btn = document.querySelector('.bayar-kode-btn');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        bayarKodeTagihan(this.getAttribute('data-kode'));
+      });
+    }
+  });
+
+  kodeInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tombolKode.click();
+  });
+
+  function bayarKodeTagihan(kode) {
+    var data = kodeTagihanData[kode];
+    if (!data || data.status === 'lunas') return;
+
+    data.status = 'lunas';
+    simpanRiwayat({
+      id: 'TX' + Date.now(),
+      kategori: 'spp',
+      label: data.desc + ' - ' + data.nama,
+      jumlah: data.jumlah,
+      metode: 'spp',
+      tanggal: new Date().toISOString()
+    });
+
+    tampilToast('Pembayaran berhasil!', 'sukses');
+    kodeInput.value = kode;
+    tombolKode.click();
+  }
+
 })();
