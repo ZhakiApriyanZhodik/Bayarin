@@ -1,0 +1,175 @@
+/* ===== Bayarin — styles.css ===== */
+
+/* kartu layanan di dashboard */
+.kartu-layanan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.kartu-layanan:hover { border-color: #004643; transform: translateY(-2px); }
+.kartu-layanan:active { transform: scale(0.97); }
+
+.ikon-layanan {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+
+/* kartu kategori tagihan */
+.kartu-kategori {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.kartu-kategori:hover { border-color: #004643; transform: translateY(-2px); }
+.kartu-kategori:active { transform: scale(0.97); }
+
+/* opsi metode bayar */
+.opsi-bayar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.opsi-bayar:hover { border-color: #0A6B66; }
+.opsi-bayar:has(input:checked) { border-color: #004643; background: rgba(0,70,67,0.03); }
+
+/* nav bawah */
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #9ca3af;
+  padding: 6px 12px;
+  transition: color 0.15s;
+}
+.nav-item i { font-size: 20px; }
+.nav-item.active { color: #004643; }
+.nav-item:hover:not(.active) { color: #0A6B66; }
+
+/* item transaksi */
+.item-tx {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  transition: border-color 0.15s;
+}
+.item-tx:hover { border-color: #0A6B66; }
+
+.ikon-tx {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+
+.info-tx { flex: 1; min-width: 0; }
+.nama-tx {
+  font-size: 14px; font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tanggal-tx { font-size: 12px; color: #718096; margin-top: 1px; }
+.jumlah-tx { font-size: 14px; font-weight: 600; color: #E74C3C; white-space: nowrap; }
+
+/* baris detail */
+.baris-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.label-detail { color: #718096; }
+.nilai-detail { font-weight: 500; text-align: right; }
+.garis-detail { border-top: 1px solid #e5e7eb; margin: 4px 0; }
+
+/* spinner loading */
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #004643;
+  border-radius: 50%;
+  animation: puter 0.7s linear infinite;
+}
+@keyframes puter { to { transform: rotate(360deg); } }
+
+/* toast notifikasi */
+.toast {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  background: #1a202c;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: muncul 0.3s ease;
+}
+.toast.sukses { background: #1E8449; }
+.toast.gagal { background: #C0392B; }
+@keyframes muncul {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* countdown QRIS */
+.countdown {
+  font-size: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #004643;
+}
+
+/* kartu VA */
+.kode-va {
+  font-family: 'Courier New', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #004643;
+  background: #f7f9fa;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-align: center;
+  user-select: all;
+}
+
+/* badge status */
+.badge-lunas {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+.badge-lunas.lunas { background: #dcfce7; color: #166534; }
+.badge-lunas.belum { background: #fee2e2; color: #991b1b; }
+
+/* Print */
+@media print {
+  header, nav, .halaman { display: none !important; }
+  #hal-tagihan { display: block !important; }
+  #bagian-sukses { display: flex !important; }
+  body { background: #fff; }
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPP - Bayarin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { DEFAULT: '#004643', light: '#0A6B66', dark: '#003331' },
+            aksen: { DEFAULT: '#F5A623', hover: '#E09515' },
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 min-h-dvh pb-20 antialiased">
+
+  <header class="sticky top-0 z-50 bg-brand text-white">
+    <div class="mx-auto max-w-lg flex items-center justify-between px-4 h-[60px]">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-full bg-brand-light flex items-center justify-center text-sm font-semibold">Z</div>
+        <div class="flex flex-col leading-tight">
+          <span class="text-[11px] opacity-75">Selamat datang,</span>
+          <span class="text-[15px] font-semibold">Zhaki</span>
+        </div>
+      </div>
+      <button class="relative w-10 h-10 rounded-full flex items-center justify-center text-lg hover:bg-white/10 transition" aria-label="Notifikasi">
+        <i class="fa-regular fa-bell"></i>
+        <span class="absolute top-2.5 right-2.5 w-[7px] h-[7px] bg-aksen rounded-full border-[1.5px] border-brand"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-lg px-4 flex flex-col gap-5 py-4">
+    <h2 class="text-lg font-semibold">Biaya Kuliah / SPP</h2>
+
+    <!-- form nim -->
+    <div class="bg-white border border-gray-200 rounded-2xl p-5 flex flex-col gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">Nomor Induk Mahasiswa (NIM)</label>
+        <input type="text" id="input-nim" class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition" placeholder="Contoh: 202310001">
+        <p class="text-xs text-red-500 mt-1.5 hidden" id="error-nim"></p>
+      </div>
+      <button id="tombol-cek-nim" class="w-full bg-brand text-white py-3 rounded-lg text-sm font-semibold hover:bg-brand-light active:scale-[0.98] transition">
+        Lihat Tagihan Semester
+      </button>
+    </div>
+
+    <!-- form kode tagihan -->
+    <div class="bg-white border border-gray-200 rounded-2xl p-5 flex flex-col gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">No Tagihan (Kode Tagihan)</label>
+        <input type="text" id="input-kode" class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition" placeholder="Contoh: 986248962486438">
+        <p class="text-xs text-red-500 mt-1.5 hidden" id="error-kode"></p>
+      </div>
+      <button id="tombol-cek-kode" class="w-full bg-brand text-white py-3 rounded-lg text-sm font-semibold hover:bg-brand-light active:scale-[0.98] transition">
+        Cek Tagihan
+      </button>
+    </div>
+
+    <!-- hasil nim -->
+    <div id="hasil-spp" class="hidden flex flex-col gap-3"></div>
+
+    <!-- hasil kode tagihan -->
+    <div id="hasil-kode" class="hidden"></div>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 flex items-center justify-around h-16">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house text-xl"></i><span>Beranda</span></a>
+    <a href="tagihan.html" class="nav-item"><i class="fa-solid fa-file-invoice text-xl"></i><span>Tagihan</span></a>
+    <a href="spp.html" class="nav-item aktif"><i class="fa-solid fa-building-columns text-xl"></i><span>SPP</span></a>
+    <a href="pulsa.html" class="nav-item"><i class="fa-solid fa-mobile-screen text-xl"></i><span>Pulsa</span></a>
+    <a href="riwayat.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span>Riwayat</span></a>
+  </nav>
+
+  <div id="wadah-toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-2 items-center"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="spp.js"></script>
+</body>
+</html>

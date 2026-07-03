@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat - Bayarin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { DEFAULT: '#004643', light: '#0A6B66', dark: '#003331' },
+            aksen: { DEFAULT: '#F5A623', hover: '#E09515' },
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 min-h-dvh pb-20 antialiased">
+
+  <header class="sticky top-0 z-50 bg-brand text-white">
+    <div class="mx-auto max-w-lg flex items-center justify-between px-4 h-[60px]">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-full bg-brand-light flex items-center justify-center text-sm font-semibold">Z</div>
+        <div class="flex flex-col leading-tight">
+          <span class="text-[11px] opacity-75">Selamat datang,</span>
+          <span class="text-[15px] font-semibold">Zhaki</span>
+        </div>
+      </div>
+      <button class="relative w-10 h-10 rounded-full flex items-center justify-center text-lg hover:bg-white/10 transition" aria-label="Notifikasi">
+        <i class="fa-regular fa-bell"></i>
+        <span class="absolute top-2.5 right-2.5 w-[7px] h-[7px] bg-aksen rounded-full border-[1.5px] border-brand"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-lg px-4 flex flex-col gap-5 py-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold">Riwayat Transaksi</h2>
+      <button id="tombol-hapus-semua" class="text-xs text-red-500 font-medium hover:text-red-700 transition hidden">
+        <i class="fa-solid fa-trash-can mr-1"></i> Hapus Semua
+      </button>
+    </div>
+
+    <!-- chart pengeluaran -->
+    <div id="bagian-chart" class="hidden bg-white border border-gray-200 rounded-2xl p-5">
+      <h3 class="text-sm font-semibold mb-3">Pengeluaran per Kategori</h3>
+      <div class="relative h-48"><canvas id="chart-pengeluaran"></canvas></div>
+    </div>
+
+    <div id="daftar-riwayat" class="flex flex-col gap-2"></div>
+    <div id="riwayat-kosong" class="hidden bg-white border border-gray-200 rounded-2xl p-8 text-center text-gray-500">
+      <i class="fa-regular fa-receipt text-3xl opacity-40 block mb-2.5"></i>
+      <p class="text-sm font-medium text-gray-900">Belum ada transaksi</p>
+      <span class="text-[13px] block mt-1">Mulai bayar tagihan pertamamu</span>
+    </div>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 flex items-center justify-around h-16">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house text-xl"></i><span>Beranda</span></a>
+    <a href="tagihan.html" class="nav-item"><i class="fa-solid fa-file-invoice text-xl"></i><span>Tagihan</span></a>
+    <a href="spp.html" class="nav-item"><i class="fa-solid fa-building-columns text-xl"></i><span>SPP</span></a>
+    <a href="pulsa.html" class="nav-item"><i class="fa-solid fa-mobile-screen text-xl"></i><span>Pulsa</span></a>
+    <a href="riwayat.html" class="nav-item aktif"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span>Riwayat</span></a>
+  </nav>
+
+  <div id="wadah-toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-2 items-center"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="riwayat.js"></script>
+</body>
+</html>
