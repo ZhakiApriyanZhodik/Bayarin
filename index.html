@@ -60,27 +60,27 @@
     <section class="flex flex-col gap-3">
       <h2 class="text-base font-semibold">Layanan</h2>
       <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-        <a href="tagihan.html?kat=pln" class="kartu-layanan">
+        <a href="pages/tagihan.html?kat=pln" class="kartu-layanan">
           <div class="ikon-layanan bg-green-50"><i class="fa-solid fa-bolt text-green-700"></i></div>
           <span class="text-xs font-medium text-gray-500">Listrik</span>
         </a>
-        <a href="tagihan.html?kat=pdam" class="kartu-layanan">
+        <a href="pages/tagihan.html?kat=pdam" class="kartu-layanan">
           <div class="ikon-layanan bg-blue-50"><i class="fa-solid fa-droplet text-blue-700"></i></div>
           <span class="text-xs font-medium text-gray-500">PDAM</span>
         </a>
-        <a href="tagihan.html?kat=internet" class="kartu-layanan">
+        <a href="pages/tagihan.html?kat=internet" class="kartu-layanan">
           <div class="ikon-layanan bg-purple-50"><i class="fa-solid fa-wifi text-purple-700"></i></div>
           <span class="text-xs font-medium text-gray-500">Internet</span>
         </a>
-        <a href="tagihan.html?kat=seminar" class="kartu-layanan">
+        <a href="pages/tagihan.html?kat=seminar" class="kartu-layanan">
           <div class="ikon-layanan bg-orange-50"><i class="fa-solid fa-graduation-cap text-orange-700"></i></div>
           <span class="text-xs font-medium text-gray-500">Seminar</span>
         </a>
-        <a href="spp.html" class="kartu-layanan">
+        <a href="pages/spp.html" class="kartu-layanan">
           <div class="ikon-layanan bg-cyan-50"><i class="fa-solid fa-building-columns text-cyan-700"></i></div>
           <span class="text-xs font-medium text-gray-500">SPP</span>
         </a>
-        <a href="pulsa.html" class="kartu-layanan">
+        <a href="pages/pulsa.html" class="kartu-layanan">
           <div class="ikon-layanan bg-red-50"><i class="fa-solid fa-mobile-screen text-red-700"></i></div>
           <span class="text-xs font-medium text-gray-500">Pulsa</span>
         </a>
@@ -101,7 +101,7 @@
     <section class="flex flex-col gap-3">
       <div class="flex items-center justify-between">
         <h2 class="text-base font-semibold">Transaksi Terakhir</h2>
-        <a href="riwayat.html" class="text-[13px] font-medium text-brand hover:opacity-70 transition">Lihat Semua</a>
+        <a href="pages/riwayat.html" class="text-[13px] font-medium text-brand hover:opacity-70 transition">Lihat Semua</a>
       </div>
       <div id="daftar-tx" class="flex flex-col gap-2"></div>
       <div id="kosong-tx" class="hidden bg-white border border-gray-200 rounded-2xl p-8 text-center text-gray-500">
@@ -115,16 +115,16 @@
   <!-- nav bawah -->
   <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 flex items-center justify-around h-16">
     <a href="index.html" class="nav-item aktif"><i class="fa-solid fa-house text-xl"></i><span>Beranda</span></a>
-    <a href="tagihan.html" class="nav-item"><i class="fa-solid fa-file-invoice text-xl"></i><span>Tagihan</span></a>
-    <a href="spp.html" class="nav-item"><i class="fa-solid fa-building-columns text-xl"></i><span>SPP</span></a>
-    <a href="pulsa.html" class="nav-item"><i class="fa-solid fa-mobile-screen text-xl"></i><span>Pulsa</span></a>
-    <a href="riwayat.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span>Riwayat</span></a>
+    <a href="pages/tagihan.html" class="nav-item"><i class="fa-solid fa-file-invoice text-xl"></i><span>Tagihan</span></a>
+    <a href="pages/spp.html" class="nav-item"><i class="fa-solid fa-building-columns text-xl"></i><span>SPP</span></a>
+    <a href="pages/pulsa.html" class="nav-item"><i class="fa-solid fa-mobile-screen text-xl"></i><span>Pulsa</span></a>
+    <a href="pages/riwayat.html" class="nav-item"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span>Riwayat</span></a>
   </nav>
 
   <div id="wadah-toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-[60] flex flex-col gap-2 items-center"></div>
 
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+  <script src="scripts/data.js"></script>
+  <script src="scripts/app.js"></script>
   <script>
     (function() {
       var txs = ambilRiwayat().slice(0, 5);
