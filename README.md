@@ -86,9 +86,11 @@ Bayarin/
 
 Lihat file [docs/akun-test.md](docs/akun-test.md) untuk daftar nomor pelanggan, NIM, kode tagihan, dan nomor HP yang bisa dipakai coba aplikasi.
 
-Link Youtube : https://www.youtube.com/watch?v=skprqf57aC8
-Link demo web : https://zhakiapriyanzhodik.github.io/Bayarin/index.html
-Link data data : https://github.com/ZhakiApriyanZhodik/Bayarin/blob/main/docs/akun-test.md
+##Link Youtube : https://www.youtube.com/watch?v=skprqf57aC8
+
+##Link demo web : https://zhakiapriyanzhodik.github.io/Bayarin/index.html
+
+##Link data data : https://github.com/ZhakiApriyanZhodik/Bayarin/blob/main/docs/akun-test.md
 
 
 ## Penjelasan
